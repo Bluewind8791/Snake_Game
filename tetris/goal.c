@@ -375,9 +375,11 @@ void check_key(void){
  
 void drop_block(void){
     int i,j;
-    
-    if(crush_on&&check_crush(bx,by+1, b_rotation)==true) crush_on=0; //밑이 비어있으면 crush flag 끔 
-    if(crush_on&&check_crush(bx,by+1, b_rotation)==false){ //밑이 비어있지않고 crush flag가 켜저있으면 
+
+    //밑이 비어있으면 crush flag 끔 
+    if(crush_on&&check_crush(bx,by+1, b_rotation)==true) crush_on=0; 
+    //밑이 비어있지않고 crush flag가 켜저있으면 
+    if(crush_on&&check_crush(bx,by+1, b_rotation)==false){ 
         for(i=0;i<MAIN_Y;i++){ //현재 조작중인 블럭을 굳힘 
             for(j=0;j<MAIN_X;j++){
                 if(main_org[i][j]==ACTIVE_BLOCK) main_org[i][j]=INACTIVE_BLOCK;

@@ -27,10 +27,10 @@
 #define INACT_BLOCK 2
 
 #define GAME_X 11*2                   // gaming area width value
-#define GAME_Y 23                   // gaming area depth value
+#define GAME_Y 23                     // gaming area depth value
 #define GAME_ADJ_X 3*2                // gaming area adjustment
-#define GAME_ADJ_Y 1                // gaming area adjustment
-#define MAIN_X GAME_X+GAME_ADJ_X+2    // print information position
+#define GAME_ADJ_Y 1                  // gaming area adjustment
+#define INFO_X GAME_X+GAME_ADJ_X+2    // information position
 
 
 ////////////////////////--Global Variable--////////////////////////
@@ -53,29 +53,57 @@ int blocks[7][4][4][4] = {
     // blocks[block_type][block_rotation][i][j]
 
 int game_board[GAME_Y][GAME_X];         // gaming board
-
-int block_type;
-int block_rotation;
-int block_type_next;
-int best_score;
-int score;
-int level;
-int bx, by;           // create block x, y site value
-int speed;
-int key;
+int copy_board[GAME_Y][GAME_X];
+int block_type;                         // block type
+int block_rotation;                     // block spin
+int block_type_next;                    // next block type
+int bx, by;                             // create block x, y site value
+int speed;                              // block falling speed
+int key;                                // keyboard key
+int new_block_on = 0;                   // if need new block => 1
+int space_key_on = 0;                   // if space key pushed => 1
+int crush_on = 0;                       // if block crush => 1
+//int best_score;                         // best score
+//int score;                              // game score
+//int level;                              // game level
 
 //personal function
-void gotoxy(short x, short y);
-void HideCursor(char show);
-
-void PrintMenu();
-void Reset();
-void ResetGame();
-void PrintGame();
+void gotoxy(short x, short y);  //void HideCursor(char show);
+void PrintMenu(void);
+void Reset(void);
+void ResetGame(void);
+void ResetCopyBoard(void);
+void PrintGame(void);
 void PrintInfo();
 void NewBlock();
 void MoveBlock(int direction);
 void Pause();
+void DropBlock();
+void CheckKey(void);
+int CheckCrush(int bx, int by, int block_rotation);
+
+// hiding cursor enum
+typedef enum { NOCURSOR, SOLIDCURSOR, NORMALCURSOR } CURSOR_TYPE; 
+// hiding cursor function
+void setcursortype(CURSOR_TYPE c) {
+     CONSOLE_CURSOR_INFO CurInfo;
+ 
+     switch (c) {
+     case NOCURSOR:
+          CurInfo.dwSize=1;
+          CurInfo.bVisible=FALSE;
+          break;
+     case SOLIDCURSOR:
+          CurInfo.dwSize=100;
+          CurInfo.bVisible=TRUE;
+          break;
+     case NORMALCURSOR:
+          CurInfo.dwSize=20;
+          CurInfo.bVisible=TRUE;
+          break;
+     }
+     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE),&CurInfo);
+}
 
 
 ////////////////////////////////////////////////////////
@@ -83,24 +111,36 @@ void Pause();
 int main() 
 {
     srand((unsigned)time(NULL));    // random seed
-    HideCursor(0);                  // 0 = unvisiable
+    setcursortype(NOCURSOR);        // hiding cursor
     
     PrintMenu();
     Reset();
 
     while(1) {
-        for(int i=0; i<10; i++) {
+        for(int i=0; i<10; i++) {       // block falling 1 block, could insert key 10 times
+            CheckKey();
             PrintGame();
-            Sleep(speed);
+            Sleep(speed);               // block falling speed
+            if(crush_on && CheckCrush(bx, by+1, block_rotation) == false)
+                Sleep(100);             // if block crush, give time to spin
+
+            if(space_key_on == 1) {     // if space bar hit, can't control
+                space_key_on = 0;
+                break;
+            }
         }
-        
+        DropBlock();
+        // check level up
+        // check game over
+        if (new_block_on == 1)          // if need new block, create new block
+            NewBlock();
     }
 
     return 0;
 }
 /////////////////////////////////////////////////////////////
 ////////////////////////--Function--////////////////////////
-void PrintMenu() {
+void PrintMenu(void) {
     int x=5, y=4;
     int cnt;
     
@@ -129,39 +169,42 @@ void PrintMenu() {
         Sleep(10);
     }
 
-    //while(kbhit())  getch();        // ??
 }
 
-void Reset()
+void Reset(void)
 {
-    FILE *file = fopen("score.dat", "rt");      // connecting score.dat
-    if(file == 0) {best_score = 0;}             // if file non-exist, best score = 0
-    else {                                      // if file open
-        fscanf(file, "%d", &best_score);        // scan best score
-        fclose(file);                           // closing file
-    }
+    // FILE *file = fopen("score.dat", "rt");      // connecting score.dat
+    // if(file == 0) {best_score = 0;}             // if file non-exist, best score = 0
+    // else {                                      // if file open
+    //     fscanf(file, "%d", &best_score);        // scan best score
+    //     fclose(file);                           // closing file
+    // }
 
     // reset variable
-    level = 1;
-    score = 0;
+    // level = 1;
+    // score = 0;
     speed = 100;
+    key = 0;
+    crush_on = 0;
 
     system("cls");         //printing clear
     ResetGame();           // Reset main board
     PrintInfo();
     PrintGame();
 
+    block_type_next = rand() % 7;
     NewBlock();
 }
 
 
-void ResetGame()
+void ResetGame(void)
 {
     int i, j;
 
     for(i=0; i<GAME_Y; i++) {           // gaming board reset 0
         for(j=0; j<GAME_X; j++) {
             game_board[i][j] = 0;
+            copy_board[i][j] = 333;     // non-use number
         }
     }
     for(j=2; j<GAME_X; j++) {
@@ -176,54 +219,70 @@ void ResetGame()
     }
 }
 
-
-void PrintGame() 
-{               // printing gaming board
-    int i, j;
-
-    for(i=0; i<GAME_Y; i++) {
-        for(j=0; j<GAME_X; j++) {
-            gotoxy(GAME_ADJ_X+j, GAME_ADJ_Y+i);
-            switch(game_board[i][j]) {
-                case WALL:
-                    printf("▩");
-                    break;
-                case EMPTY:
-                    printf("  ");
-                    break;
-                case CEIL:
-                    printf(". ");
-                    break;
-                case INACT_BLOCK:
-                    printf("□");
-                    break;
-                case ACTIVE_BLOCK:
-                    printf("■");
-                    break;
-            }
+void ResetCopyBoard(void)
+{
+    for(int i=0; i<GAME_Y; i++) {
+        for(int j=0; j<GAME_X; j++) {
+            copy_board[i][j] = 333;     // non-use number
         }
     }
 }
 
-void NewBlock()
-{
+void PrintGame(void)
+{               // printing gaming board
     int i, j;
+    for(j=2; j<GAME_X; j++) {               // if ceil empty re-drawing ceil
+        if(game_board[3][j] == EMPTY)
+            game_board[3][j] = CEIL;
+    }
 
-    bx = (GAME_X/2) - 1;            // creating block position
-    by = 0;
-    block_type = block_type_next;   // bringing next block type
-    block_type_next = rand() % 7;   // random value next block type
-    block_rotation = 0;             // rotation reset
-
-    for(i=0; i<4; i++) {
-        for(j=0; j<4; j++) {
-            if(blocks[block_type][block_rotation][i][j] == 1) 
-                game_board[by+i][bx+j] = ACTIVE_BLOCK;
+    for(i=0; i<GAME_Y; i++) {
+        for(j=0; j<GAME_X; j++) {
+            if(game_board[i][j] != copy_board[i][j]) {      // if copy table and original table
+                                                            // different, drawing
+                gotoxy(GAME_ADJ_X+j, GAME_ADJ_Y+i);
+                switch(game_board[i][j]) {
+                    case WALL:
+                        printf("▩");
+                        break;
+                    case EMPTY:
+                        printf("  ");
+                        break;
+                    case CEIL:
+                        printf(". ");
+                        break;
+                    case INACT_BLOCK:
+                        printf("□");
+                        break;
+                    case ACTIVE_BLOCK:
+                        printf("■");
+                        break;
+                }
+            }
         }
-    }    
+    }
+
+    for(i=0; i<GAME_Y; i++) {           // printing gaming board and copy
+        for(j=0; j<GAME_X; j++) {
+            game_board[i][j] = copy_board[i][j];
+        }
+    }
 }
 
-void CheckKey()
+// check crush at the appointed location
+int CheckCrush(int bx, int by, int block_rotation)
+{
+    for(int i=0; i<4; i++) {
+        for(int j=0; j<4; j++) {
+            if(blocks[block_type][block_rotation][i][j] == 1
+            && game_board[by+i][bx+j] > 0)
+                return false;
+        }
+    }
+    return true;
+}
+
+void CheckKey(void)
 {
     key = 0;                // reset key
 
@@ -233,22 +292,31 @@ void CheckKey()
             key = getch();
             switch(key) {
                 case LEFT:
-                    MoveBlock(LEFT);
+                    if(CheckCrush(bx-1, by, block_rotation) == true)
+                        MoveBlock(LEFT);
                     break;
                 case RIGHT:
-                    MoveBlock(RIGHT);
+                    if(CheckCrush(bx+1, by, block_rotation) == true)
+                        MoveBlock(RIGHT);
                     break;
                 case DOWN:
-                    MoveBlock(DOWN);
+                    if(CheckCrush(bx, by+1, block_rotation) == true)
+                        MoveBlock(DOWN);
                     break;
                 case UP:
-                    MoveBlock(UP);
+                    if(CheckCrush(bx, by, (block_rotation+1)%4 ) == true)
+                        MoveBlock(UP);
                     break;
             }
         }
         else {          // if key is not arrow key
             switch(key) {
                 case SPACE:
+                    space_key_on = 1;
+                    while(crush_on == 0) {
+                        DropBlock();        // drop block until bottom
+                        // score up
+                    }
                     break;
                 case P:
                 case p:
@@ -264,9 +332,71 @@ void CheckKey()
 
 void Pause()
 {
-    
+    int x=10, y=5;
     getch();        // waiting for input
 
+    system("cls");  // clear screen
+    ResetCopyBoard();
+    PrintGame();
+    PrintInfo();
+
+    for(int i=1; i<3; i++) {        // Drawing next block
+        for(int j=0; j<4; j++) {
+            if(blocks[block_type_next][0][i][j] == 1) {
+                gotoxy(GAME_X + GAME_ADJ_X+3+j, i+6);
+                printf("■");
+            }
+            else {
+                gotoxy(GAME_X + GAME_ADJ_X+3+j, i+6);
+                printf("  ");
+            }
+        }
+    }
+
+}
+
+void NewBlock(void)
+{
+    int i, j;
+
+    bx = (GAME_X/2) - 1;            // creating block position
+    by = 0;
+    block_type = block_type_next;   // bringing next block type
+    block_type_next = rand() % 7;   // random value next block type
+    block_rotation = 0;             // rotation reset
+    new_block_on = 0;               // reset new block flag
+
+    for(i=0; i<4; i++) {
+        for(j=0; j<4; j++) {
+            if(blocks[block_type][block_rotation][i][j] == 1) 
+                game_board[by+i][bx+j] = ACTIVE_BLOCK;
+        }
+    }    
+}
+
+
+void DropBlock()
+{
+    // 밑이 비어있으면 crush on flog off
+    if(crush_on && CheckCrush(bx, by+1, block_rotation) == true)
+        crush_on = false;
+
+    // 밑이 비어있지 않고, when crush flog on
+    if(crush_on && CheckCrush(bx, by+1, block_rotation) == false) {
+        for(int i=0; i<GAME_Y; i++) {
+            for(int j=0; i<GAME_X; j++) {
+                if(game_board[i][j] == ACTIVE_BLOCK)
+                    game_board[i][j] = INACT_BLOCK;     // active block -> inactive block
+            }
+        }
+        crush_on = 0;       // reset crush flag
+        new_block_on = 1;   // need new block
+        return;             // function exit
+    }
+    if(CheckCrush(bx, by+1, block_rotation) == true)    // empty down, move block
+        MoveBlock(DOWN);
+    if(CheckCrush(bx, by+1, block_rotation) == false)   // if down is not empty, crush flag on
+        crush_on++;
 }
 
 void MoveBlock(int direction)
@@ -336,41 +466,26 @@ void MoveBlock(int direction)
     }
 }
 
-
-
-
-
-
 void PrintInfo(void)
 {
     int y = 3;
 
-    gotoxy(MAIN_X, y);    printf(" LEVEL : %3d", level);
-    gotoxy(MAIN_X, y+1);  printf("  GOAL : ");
-    gotoxy(MAIN_X, y+2);  printf("+-  N E X T  -+ ");
-    gotoxy(MAIN_X, y+3);  printf("|             | ");
-    gotoxy(MAIN_X, y+4);  printf("|             | ");
-    gotoxy(MAIN_X, y+5);  printf("|             | ");
-    gotoxy(MAIN_X, y+6);  printf("|             | ");
-    gotoxy(MAIN_X, y+7);  printf("+-- -  -  - --+ "); 
-    gotoxy(MAIN_X, y+8);  printf(" YOUR SCORE : %5d", score);
+    gotoxy(INFO_X, y);    printf(" LEVEL : ");
+    gotoxy(INFO_X, y+1);  printf("  GOAL : ");
+    gotoxy(INFO_X, y+2);  printf("+-  N E X T  -+ ");
+    gotoxy(INFO_X, y+3);  printf("|             | ");
+    gotoxy(INFO_X, y+4);  printf("|             | ");
+    gotoxy(INFO_X, y+5);  printf("|             | ");
+    gotoxy(INFO_X, y+6);  printf("|             | ");
+    gotoxy(INFO_X, y+7);  printf("+-- -  -  - --+ "); 
+    gotoxy(INFO_X, y+8);  printf(" YOUR SCORE : ");
 
-    gotoxy(MAIN_X, y+15); printf("  △   : Shift        SPACE : Hard Drop");     
-    gotoxy(MAIN_X, y+16); printf("◁  ▷ : Left / Right   P   : Pause");     
-    gotoxy(MAIN_X, y+17); printf("  ▽   : Soft Drop     ESC  : Quit");
+    gotoxy(INFO_X, y+15); printf("  △   : Shift        SPACE : Hard Drop");     
+    gotoxy(INFO_X, y+16); printf("◁  ▷ : Left / Right   P   : Pause");     
+    gotoxy(INFO_X, y+17); printf("  ▽   : Soft Drop     ESC  : Quit");
 }
 
 void gotoxy(short x, short y) {     // gotoxy default setting
     COORD pos = {x, y};
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
-
-void HideCursor(char show)     // hiding cursor
-{
-    HANDLE hConsole;
-    CONSOLE_CURSOR_INFO ConsoleCursor;
-    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    ConsoleCursor.bVisible = show;
-    ConsoleCursor.dwSize = 1;
-    SetConsoleCursorInfo(hConsole, &ConsoleCursor);
 }
