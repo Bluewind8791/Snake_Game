@@ -269,7 +269,7 @@ void draw_main(void){ //게임판 그리는 함수
         for(j=0;j<MAIN_X;j++){
             if(main_cpy[i][j]!=main_org[i][j]){ //cpy랑 비교해서 값이 달라진 부분만 새로 그려줌.
                                                 //이게 없으면 게임판전체를 계속 그려서 느려지고 반짝거림
-            gotoxy(MAIN_X_ADJ+j, MAIN_Y_ADJ+i); 
+                gotoxy(MAIN_X_ADJ+j, MAIN_Y_ADJ+i); 
                 switch(main_org[i][j]){
                     case EMPTY: //빈칸모양 
                         printf("  ");
@@ -394,6 +394,7 @@ void drop_block(void){
     if(check_crush(bx,by+1, b_rotation)==false) crush_on++; //밑으로 이동이 안되면  crush flag를 켬
 }
  
+
 int check_crush(int bx, int by, int b_rotation){ //지정된 좌표와 회전값으로 충돌이 있는지 검사 
     int i,j;
     
@@ -404,6 +405,7 @@ int check_crush(int bx, int by, int b_rotation){ //지정된 좌표와 회전값으로 충돌
     }    
     return true; //하나도 안겹치면 true리턴 
 };
+ 
  
 void move_block(int dir){ //블록을 이동시킴 
     int i,j;
