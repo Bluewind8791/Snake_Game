@@ -243,7 +243,7 @@ void food(void){
             if(food_x==x[i]&&food_y==y[i]){
                 food_crush_on=1; //°ãÄ¡¸é food_crush_on ¸¦ on 
                 r++;
-break;
+                break;
             }
         }
         
