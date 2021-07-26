@@ -24,6 +24,24 @@
 #define ADJ_X 4
 #define ADJ_Y 2
 
+enum {
+    BLACK,
+    DARK_BLUE,
+    DARK_GREEN,
+    DARK_SKYBLUE,
+    DARK_RED,
+    DARK_VOILET,
+    DARK_YELLOW,
+    GRAY,
+    DARK_GRAY,
+    BLUE,
+    GREEN,
+    SKYBLUE,
+    RED,
+    VIOLET,
+    YELLOW,
+    WHITE,
+};
 
 int game_area[GAME_X][GAME_Y];  // game area
 int x[100], y[100];             // snake x, y position
@@ -50,6 +68,7 @@ void PrintTitle();
 void GameOver();
 void PrintInfo();
 void Pause();
+void SetColor(unsigned short text);
 
 
 ////            MAIN FUNCTION              ////
@@ -77,6 +96,8 @@ void Init() {
 	cursorInfo.bVisible = 0;
 	cursorInfo.dwSize = 1;
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+    system("mode con:cols=110 lines=30");
+    SetConsoleTitle("SNAKE GAME v1.0");
 }
 
 
@@ -92,7 +113,7 @@ void PrintTitle()
     printf("  　　　　■■■　　　　■■　■■■　　　■■■■■　■■　　　　■■■　　　　　　　■■　　　       \n");
     printf("  　　　　■■　　　　■■　　■■■　　　　■■　　　■■　　　■■■■■■■　　　　■■　　■        \n");
     printf("  ■■■■■　　　　　■■　　■■■　　　■■■　　　■■　　　■■　　　■■　　　■■■■■■　         \n");
-    printf("  ■■■　　　　　　　　　　　　　　　　　■■　　　■■■　　　　　　　　　　　　　　■■■■");      
+    printf("  ■■■　　　　　　　　　　　　　　　　　■■　　　■■■　　　　　　　　　　　　　　■■■■");
     gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+11); printf("    < PRESS ANY KEY TO START >");
     gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+13+1); printf("+------- HOW TO PLAY GAME -------+");
     gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+14+1); printf("|                                |");
@@ -292,9 +313,11 @@ void Pause()
 {
     while(true) {
         if(kbhit()) { // if keyboard hit  (P 누르면 제대로 안됨)
+            gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+17); printf("                              ");
             gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+16); printf("                    ");
             break;
         }
+        gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+17); printf("Please Press Any Key to Resume");
         gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+16); printf(" ※ P A U S I N G ※");
         Sleep(400);
         gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+16); printf("                    ");
@@ -395,6 +418,10 @@ void GameOver()
     }
 }
 
+void SetColor(unsigned short text)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text);
+}
 
 void gotoxy(int x, int y) {
 	COORD pos;
