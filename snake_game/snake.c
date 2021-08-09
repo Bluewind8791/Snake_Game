@@ -57,7 +57,7 @@ int best_score;
 
 void gotoxy(int x, int y);
 void Init();
-void PrintGameArea();
+void PrintField();
 void MakeSnake();
 void ResetGameArea();
 void ResetGame();
@@ -104,22 +104,22 @@ void Init() {
 void PrintTitle()
 {
     printf("\n\n");
-    printf("  ¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á         \n");
-    printf("  ¡¡¡¡¡á¡á¡á¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡á¡á¡¡¡¡¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á    \n");
-    printf("  ¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡á¡á¡¡¡á¡á¡á¡¡¡¡¡¡¡á¡á¡á¡á¡á          \n");
-    printf("  ¡¡¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡¡¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡á¡á          \n");
-    printf("  ¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡¡¡á¡á¡¡¡¡¡¡¡¡¡¡¡á¡á¡¡¡á¡á¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡á        \n");
-    printf("  ¡¡¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡¡¡á¡á¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡á¡á¡¡¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡á           \n");
-    printf("  ¡¡¡¡¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡á¡á¡¡¡á¡á¡á¡¡¡¡¡¡¡á¡á¡á¡á¡á¡¡¡á¡á¡¡¡¡¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á¡¡¡¡¡¡       \n");
-    printf("  ¡¡¡¡¡¡¡¡¡á¡á¡¡¡¡¡¡¡¡¡á¡á¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡á¡á¡¡¡¡¡¡¡á¡á¡¡¡¡¡¡¡á¡á¡á¡á¡á¡á¡á¡¡¡¡¡¡¡¡¡á¡á¡¡¡¡¡á        \n");
-    printf("  ¡á¡á¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡á¡á¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡á¡á¡¡¡¡¡¡¡á¡á¡¡¡¡¡¡¡á¡á¡¡¡¡¡¡¡á¡á¡á¡á¡á¡á¡¡         \n");
-    printf("  ¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á¡¡¡¡¡¡¡á¡á¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡á¡á¡á");
+    printf("  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½         \n");
+    printf("  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    \n");
+    printf("  ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½          \n");
+    printf("  ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½          \n");
+    printf("  ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½        \n");
+    printf("  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½           \n");
+    printf("  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½       \n");
+    printf("  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½        \n");
+    printf("  ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡         \n");
+    printf("  ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
     gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+11); printf("    < PRESS ANY KEY TO START >");
     gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+13+1); printf("+------- HOW TO PLAY GAME -------+");
     gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+14+1); printf("|                                |");
-    gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+15+1); printf("|     ¡â   : Move Up             |");
-    gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+16+1); printf("|   ¢·  ¢¹ : Move Left / Right   |");
-    gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+17+1); printf("|     ¡ä   : Move Down           |");
+    gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+15+1); printf("|     ï¿½ï¿½   : Move Up             |");
+    gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+16+1); printf("|   ï¿½ï¿½  ï¿½ï¿½ : Move Left / Right   |");
+    gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+17+1); printf("|     ï¿½ï¿½   : Move Down           |");
     gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+18+1); printf("|                                |");
     gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+19+1); printf("|  ESC : Quit Game / P : Pause   |");
     gotoxy(ADJ_X+(GAME_X/2), ADJ_Y+20+1); printf("|                                |");
@@ -141,11 +141,11 @@ void PrintTitle()
 
 void ResetGame()
 {
-    FILE *file=fopen("score.dat", "rt"); // score.dat ÆÄÀÏÀ» ¿¬°á write text mode
-    if (file==0) { best_score = 0; } //ÆÄÀÏÀÌ ¾øÀ¸¸é °Á ÃÖ°íÁ¡¼ö¿¡ 0À» ³ÖÀ½ 
+    FILE *file=fopen("score.dat", "rt"); // score.dat ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ write text mode
+    if (file==0) { best_score = 0; } //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
     else {
-        fscanf(file,"%d", &best_score); // ÆÄÀÏÀÌ ¿­¸®¸é ÃÖ°íÁ¡¼ö¸¦ ºÒ·¯¿È 
-        fclose(file); //ÆÄÀÏ ´ÝÀ½ 
+        fscanf(file,"%d", &best_score); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ 
+        fclose(file); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
     }
 
     length = 5;
@@ -156,7 +156,7 @@ void ResetGame()
 
     system("cls");
     ResetGameArea();
-    PrintGameArea();
+    PrintField();
     MakeSnake();
     Food();
     PrintInfo();
@@ -184,13 +184,13 @@ void ResetGameArea()
 }
 
 
-void PrintGameArea()
+void PrintField()
 {
     for(int i=0; i<GAME_X; i++) {
         for(int j=0; j<GAME_Y; j++) {
             gotoxy(ADJ_X + j, ADJ_Y + i);
             if(game_area[i][j] == WALL) {
-                printf("¢Ì");
+                printf("ï¿½ï¿½");
             }
         }
     }
@@ -199,14 +199,14 @@ void PrintGameArea()
 
 void MakeSnake()
 {
-    for(int i=0; i<length; i++) { // ¹ì ¸öÅë°ª ÀÔ·Â 
+    for(int i=0; i<length; i++) { // ï¿½ï¿½ ï¿½ï¿½ï¿½ë°ª ï¿½Ô·ï¿½ 
         x[i] = GAME_X / 2 + i;
         y[i] = GAME_Y / 2;
         gotoxy(ADJ_X + x[i], ADJ_Y + y[i]);
-        printf("¡á");
+        printf("ï¿½ï¿½");
     }
-    gotoxy(ADJ_X + x[0], ADJ_Y + y[0]); // ¹ì ¸Ó¸® ±×¸² 
-    printf("¡ß");
+    gotoxy(ADJ_X + x[0], ADJ_Y + y[0]); // ï¿½ï¿½ ï¿½Ó¸ï¿½ ï¿½×¸ï¿½ 
+    printf("ï¿½ï¿½");
 }
 
 
@@ -224,16 +224,16 @@ void Food()
         food_y = (rand() % (GAME_Y - 2)) + 1;
 
         for(int i=0; i<length; i++) {
-            if(food_x == x[i] && food_y == y[i]) {  // ¹ìÀÌ ¸Ô¾ú´ÂÁö È®ÀÎ
+            if(food_x == x[i] && food_y == y[i]) {  // ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¾ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
                 food_crush_flag = true;
                 random++;
                 break;
             }
         }
 
-        if(food_crush_flag == true) continue;  // ºÎµóÄ¡¸é while¹® ´Ù½Ã ½ÃÀÛ
+        if(food_crush_flag == true) continue;  // ï¿½Îµï¿½Ä¡ï¿½ï¿½ whileï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½
         
-        gotoxy(ADJ_X + food_x, ADJ_Y + food_y); printf("¢À"); // print food
+        gotoxy(ADJ_X + food_x, ADJ_Y + food_y); printf("ï¿½ï¿½"); // print food
         break;
     }
 }
@@ -244,9 +244,9 @@ void PrintInfo()
     gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+2); printf("[ S N A K E   G A M E ]");
     gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+5); printf(" BEST SCORE : %4d", best_score);
     gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+6); printf(" YOUR SCORE : %4d", score);
-    gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+8); printf("   ¡â   : Move Up");
-    gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+9); printf(" ¢·  ¢¹ : Move Left / Right");
-    gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+10); printf("   ¡ä   : Move Down");
+    gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+8); printf("   ï¿½ï¿½   : Move Up");
+    gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+9); printf(" ï¿½ï¿½  ï¿½ï¿½ : Move Left / Right");
+    gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+10); printf("   ï¿½ï¿½   : Move Down");
     gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+12); printf(" ESC : Quit Game");
     gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+13); printf("  P  : Pause");
 }
@@ -312,13 +312,13 @@ void CheckKey()
 void Pause()
 {
     while(true) {
-        if(kbhit()) { // if keyboard hit  (P ´©¸£¸é Á¦´ë·Î ¾ÈµÊ)
+        if(kbhit()) { // if keyboard hit  (P ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Èµï¿½)
             gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+17); printf("                              ");
             gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+16); printf("                    ");
             break;
         }
         gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+17); printf("Please Press Any Key to Resume");
-        gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+16); printf(" ¡Ø P A U S I N G ¡Ø");
+        gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+16); printf(" ï¿½ï¿½ P A U S I N G ï¿½ï¿½");
         Sleep(400);
         gotoxy((ADJ_X*2)+GAME_X-2, ADJ_Y+16); printf("                    ");
         Sleep(400);
@@ -330,41 +330,41 @@ void MovingSnake()
 {
     int i;
 
-    // À½½Ä°ú Ãæµ¹Çß´ÂÁö °Ë»ç
+    // ï¿½ï¿½ï¿½Ä°ï¿½ ï¿½æµ¹ï¿½ß´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
     if(x[0] == food_x && y[0] == food_y) {
-        score += (250 - speed); // Á¡¼ö Áõ°¡
-        speed -= 5; // ¼Óµµ Áõ°¡
+        score += (250 - speed); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        speed -= 5; // ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
         Food();
-        length++;   // ¸ö ±æÀÌ Áõ°¡
+        length++;   // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         x[length-1] = x[length-2];  
         y[length-1] = y[length-2];
     }
     
-    // º®°ú Ãæµ¹Çß´ÂÁö °Ë»ç
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ï¿½ß´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
     if(x[0] == 0 || x[0] == GAME_X-1 || y[0] == GAME_Y-1 || y[0] == 0) {
         GameOver();
         return;
     }
 
-    // ÀÚ½Å°ú Ãæµ¹Çß´ÂÁö °Ë»ç
-    for(i=1; i<length; i++) { //ÀÚ±â¸ö°ú Ãæµ¹Çß´ÂÁö °Ë»ç 
+    // ï¿½Ú½Å°ï¿½ ï¿½æµ¹ï¿½ß´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
+    for(i=1; i<length; i++) { //ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ï¿½ß´ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ 
         if(x[0] == x[i] && y[0] == y[i]) {
             GameOver();
             return;
         }
     }
     
-    // ¸¶Áö¸· ²¿¸® »èÁ¦
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     gotoxy(ADJ_X + x[length-1], ADJ_Y + y[length-1]); printf("  ");
 
-    // ¸öÅë ÁÂÇ¥ ÇÑÄ­¾¿ ÀÌµ¿
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½Ä­ï¿½ï¿½ ï¿½Ìµï¿½
     for(i=length-1; i>0; i--) {
         x[i] = x[i-1];
         y[i] = y[i-1];
     }
 
-    // ¸Ó¸® Áö¿ì°í ±× ÀÚ¸®¿¡ ²¿¸® Ãâ·Â
-    gotoxy(ADJ_X + x[0], ADJ_Y + y[0]); printf("¡á");
+    // ï¿½Ó¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    gotoxy(ADJ_X + x[0], ADJ_Y + y[0]); printf("ï¿½ï¿½");
     switch(dir) {
         case LEFT:
             --x[0];
@@ -379,26 +379,26 @@ void MovingSnake()
             ++y[0];
             break;
     }
-    gotoxy(ADJ_X + x[i], ADJ_Y + y[i]); printf("¡ß"); // print head
+    gotoxy(ADJ_X + x[i], ADJ_Y + y[i]); printf("ï¿½ï¿½"); // print head
 }
 
 
 void GameOver()
 {
-    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+0); printf("¢º¢º¢º¢º¢º¢º¢º¢º¢º¢º¢º¢º¢º¢º¢º¢º¢º");
-    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+1); printf("¡ã                              ¡å");
-    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+2); printf("¡ã       G A M E   O V E R      ¡å");
-    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+3); printf("¡ã                              ¡å");
-    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+4); printf("¡ã                              ¡å");
-    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+5); printf("¡ã    Your Score : %4d         ¡å", score);
-    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+6); printf("¡ã                              ¡å");
-    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+7); printf("¡ã   Press any key to RESTART   ¡å");
-    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+8); printf("¡ã                              ¡å");
-    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+9); printf("¢¸¢¸¢¸¢¸¢¸¢¸¢¸¢¸¢¸¢¸¢¸¢¸¢¸¢¸¢¸¢¸¢¸");
+    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+0); printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+1); printf("ï¿½ï¿½                              ï¿½ï¿½");
+    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+2); printf("ï¿½ï¿½       G A M E   O V E R      ï¿½ï¿½");
+    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+3); printf("ï¿½ï¿½                              ï¿½ï¿½");
+    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+4); printf("ï¿½ï¿½                              ï¿½ï¿½");
+    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+5); printf("ï¿½ï¿½    Your Score : %4d         ï¿½ï¿½", score);
+    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+6); printf("ï¿½ï¿½                              ï¿½ï¿½");
+    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+7); printf("ï¿½ï¿½   Press any key to RESTART   ï¿½ï¿½");
+    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+8); printf("ï¿½ï¿½                              ï¿½ï¿½");
+    gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+9); printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 
     if (score > best_score) {
         best_score = score;
-        gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+4); printf("¡ã       ¡Ù BEST SCORE ¡Ù       ¡å");
+        gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+4); printf("ï¿½ï¿½       ï¿½ï¿½ BEST SCORE ï¿½ï¿½       ï¿½ï¿½");
     }
 
     while(true) {
@@ -411,9 +411,9 @@ void GameOver()
             }
             else break; // else blink
         }
-        gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+7); printf("¡ã   Press any key to RESTART   ¡å");
+        gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+7); printf("ï¿½ï¿½   Press any key to RESTART   ï¿½ï¿½");
         Sleep(400);
-        gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+7); printf("¡ã                              ¡å");
+        gotoxy(ADJ_X+(GAME_X/2)-9, ADJ_Y+(GAME_Y/3)-1+7); printf("ï¿½ï¿½                              ï¿½ï¿½");
         Sleep(400);
     }
 }
@@ -425,7 +425,7 @@ void SetColor(unsigned short text)
 
 void gotoxy(int x, int y) {
 	COORD pos;
-	pos.X = x * 2;  // °¡·Î´Â µÎÄ­¾¿ ÀÌµ¿
+	pos.X = x * 2;  // ï¿½ï¿½ï¿½Î´ï¿½ ï¿½ï¿½Ä­ï¿½ï¿½ ï¿½Ìµï¿½
 	pos.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
